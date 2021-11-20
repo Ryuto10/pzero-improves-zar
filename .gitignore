@@ -1,0 +1,9 @@
+__pycache__/
+.DS_Store 
+.ipynb_checkpoints
+.python-version
+.env
+.venv
+.idea/
+.vscode/
+data/

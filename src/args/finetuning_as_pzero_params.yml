@@ -1,0 +1,20 @@
+# please set the file path
+output_dir: None
+train_data_file: None
+dev_data_file: None
+pretrained_model_path: None
+
+# device (We used single GPU)
+fp16: True
+fp16_opt_level: "O1"
+no_cuda: False
+
+# hyper-parameters
+seed: 0
+per_gpu_train_batch_size: 8
+per_gpu_eval_batch_size: 8
+gradient_accumulation_steps: 32
+learning_rate: 5e-05
+
+# model specific parameters
+model_type: 'as-pzero'

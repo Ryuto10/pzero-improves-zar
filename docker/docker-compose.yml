@@ -1,0 +1,15 @@
+version: '2.4'
+services:
+  cabocha:
+    build:
+      context: "../"
+      dockerfile: "docker/Dockerfile"
+    container_name: 'pzero-improves-zar'
+    platform: linux/amd64
+    restart: always
+    tty: true
+    volumes:
+      - type: bind
+        source: "../"
+        target: "/code"
+    working_dir: '/code'
