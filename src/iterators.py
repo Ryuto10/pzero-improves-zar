@@ -27,6 +27,8 @@ from instances import (
 from preprocess import reconfigure_sw2w_dict
 from utils import read_lines, count_n_lines
 
+PasTrainingInstance = Union[AsTrainingInstance, AsPzeroTrainingInstance]
+
 
 class PaddingBucketIterator(object):
     """Generate padded mini-batches to minimize padding as much as possible.
@@ -61,7 +63,7 @@ class PaddingBucketIterator(object):
         self.iterator = None
 
         if self.use_max_tokens:
-            logger.info(f"a mini-batch size is determined by the number of tokens.")
+            logger.info("a mini-batch size is determined by the number of tokens.")
             logger.info(f"Number of max tokens per batch: {self.batch_size}")
         else:
             logger.info(f"Number of instance per batch: {self.batch_size}")
@@ -267,7 +269,7 @@ class PasBucketIterator(PaddingBucketIterator):
             data_size_percentage: float = 100,
             max_seq_length: int = 512,
             model_type: str = AS_PZERO,  # 'as' or 'as-pzero'
-            dataset: Optional[List[Union[AsTrainingInstance, AsPzeroTrainingInstance]]] = None,
+            dataset: Optional[List[PasTrainingInstance]] = None,
     ):
         """
         Args:

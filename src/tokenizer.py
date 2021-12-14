@@ -1,10 +1,13 @@
 # coding=utf-8
 
-from typing import List, Dict, Optional, TypedDict
+import re
 from abc import ABC
+from typing import List, Dict, Optional, TypedDict
+
 from logzero import logger
 from transformers.tokenization_bert_japanese import BertJapaneseTokenizer
-import re
+
+from models import CL_TOHOKU_BERT
 
 
 class SpecialTokens(TypedDict):
@@ -105,9 +108,7 @@ class JapaneseTokenizer(Tokenizer):
 
     def __init__(self):
         super().__init__()
-        self.tokenizer = BertJapaneseTokenizer.from_pretrained(
-            'cl-tohoku/bert-base-japanese-whole-word-masking'
-        )
+        self.tokenizer = BertJapaneseTokenizer.from_pretrained(CL_TOHOKU_BERT)
         self.vocab = self.tokenizer.vocab
         self.model_max_length = self.tokenizer.model_max_length
 

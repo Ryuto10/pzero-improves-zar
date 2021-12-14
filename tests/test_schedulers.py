@@ -1,8 +1,4 @@
-import sys
-from os import path
-
 import unittest
-from logzero import logger
 
 from src.schedulers import TrainingScheduler, MyLRScheduler
 

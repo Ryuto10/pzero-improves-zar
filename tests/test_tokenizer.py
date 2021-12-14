@@ -2,7 +2,6 @@
 
 import unittest
 
-from collections import defaultdict
 from src.tokenizer import JapaneseCharTokenizer, JapaneseTokenizer, SpecialTokens
 
 
