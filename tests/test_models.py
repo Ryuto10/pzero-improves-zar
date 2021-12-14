@@ -427,27 +427,29 @@ class TestPzeroModelForPreTraining(unittest.TestCase):
     max_seq_length = 15
     batch_instance = mock_pzero_batch_instance
 
-    # def test_on_cpu(self):
-    #     device = torch.device('cpu')
-    #     model = self.model.to(device)
-    #
-    #     # forward
-    #     loss = model(self.batch_instance)
-    #     assert loss.shape == torch.Size([])
-    #
-    #     # prediction
-    #     output = model.prediction(self.batch_instance)
-    #     assert output.shape == torch.Size([self.batch_size, self.max_seq_length])
-    #
-    #     # inference
-    #     output = model.inference(self.batch_instance)
-    #     output = output["selection_positions"]
-    #     assert output.shape == torch.Size([self.batch_size])
+    def test_on_cpu(self):
+        device = torch.device('cpu')
+        model = self.model.to(device)
+        model.device = device
+
+        # forward
+        loss = model(self.batch_instance)
+        assert loss.shape == torch.Size([])
+
+        # prediction
+        output = model.prediction(self.batch_instance)
+        assert output.shape == torch.Size([self.batch_size, self.max_seq_length])
+
+        # inference
+        output = model.inference(self.batch_instance)
+        output = output["selection_positions"]
+        assert output.shape == torch.Size([self.batch_size])
 
     def test_on_gpu(self):
         if torch.cuda.is_available():
             device = torch.device('cuda', index=0)
             model = self.model.to(device)
+            model.device = device
 
             # forward
             loss = model(self.batch_instance)
@@ -465,112 +467,112 @@ class TestPzeroModelForPreTraining(unittest.TestCase):
             logger.warning('Not tested on GPU')
 
 
-# class TestAsModel(unittest.TestCase):
-#     dummy_loss_function = DummyLossFunction()
-#     model = AsModel(dummy_loss_function)
-#
-#     # shape
-#     batch_size = 2
-#     max_seq_length = 21
-#     batch_instance = mock_as_batch_instance
-#
-#     def test_on_cpu(self):
-#         device = torch.device('cpu')
-#         model = self.model.to(device)
-#
-#         # forward
-#         loss = model(self.batch_instance)
-#         assert loss.shape == torch.Size([])
-#
-#         # prediction
-#         label_scores, exo_scores = model.prediction(self.batch_instance)
-#         assert label_scores.shape == torch.Size([self.batch_size, self.max_seq_length, 4])
-#         assert exo_scores.shape == torch.Size([self.batch_size, 3 * 4])
-#
-#         # inference
-#         output = model.inference(self.batch_instance)
-#         predicts = output["predicts"]
-#         exo_predicts = output["exo_predicts"]
-#         assert torch.Tensor(predicts).shape == torch.Size([self.batch_size * 3])
-#         assert torch.Tensor(exo_predicts).shape == torch.Size([self.batch_size * 3])
-#
-#     def test_on_gpu(self):
-#         if torch.cuda.is_available():
-#             device = torch.device('cuda', index=0)
-#             model = self.model.to(device)
-#
-#             # forward
-#             loss = model(self.batch_instance)
-#             assert loss.shape == torch.Size([])
-#
-#             # prediction
-#             label_scores, exo_scores = model.prediction(self.batch_instance)
-#             assert label_scores.shape == torch.Size([self.batch_size, self.max_seq_length, 4])
-#             assert exo_scores.shape == torch.Size([self.batch_size, 3 * 4])
-#
-#             # inference
-#             output = model.inference(self.batch_instance)
-#             predicts = output["predicts"]
-#             exo_predicts = output["exo_predicts"]
-#             assert torch.Tensor(predicts).shape == torch.Size([self.batch_size * 3])
-#             assert torch.Tensor(exo_predicts).shape == torch.Size([self.batch_size * 3])
-#
-#         else:
-#             logger.warning('Not tested on GPU')
+class TestAsModel(unittest.TestCase):
+    dummy_loss_function = DummyLossFunction()
+    model = AsModel(dummy_loss_function)
+
+    # shape
+    batch_size = 2
+    max_seq_length = 21
+    batch_instance = mock_as_batch_instance
+
+    def test_on_cpu(self):
+        device = torch.device('cpu')
+        model = self.model.to(device)
+
+        # forward
+        loss = model(self.batch_instance)
+        assert loss.shape == torch.Size([])
+
+        # prediction
+        label_scores, exo_scores = model.prediction(self.batch_instance)
+        assert label_scores.shape == torch.Size([self.batch_size, self.max_seq_length, 4])
+        assert exo_scores.shape == torch.Size([self.batch_size, 3 * 4])
+
+        # inference
+        output = model.inference(self.batch_instance)
+        predicts = output["predicts"]
+        exo_predicts = output["exo_predicts"]
+        assert torch.Tensor(predicts).shape == torch.Size([self.batch_size * 3])
+        assert torch.Tensor(exo_predicts).shape == torch.Size([self.batch_size * 3])
+
+    def test_on_gpu(self):
+        if torch.cuda.is_available():
+            device = torch.device('cuda', index=0)
+            model = self.model.to(device)
+
+            # forward
+            loss = model(self.batch_instance)
+            assert loss.shape == torch.Size([])
+
+            # prediction
+            label_scores, exo_scores = model.prediction(self.batch_instance)
+            assert label_scores.shape == torch.Size([self.batch_size, self.max_seq_length, 4])
+            assert exo_scores.shape == torch.Size([self.batch_size, 3 * 4])
+
+            # inference
+            output = model.inference(self.batch_instance)
+            predicts = output["predicts"]
+            exo_predicts = output["exo_predicts"]
+            assert torch.Tensor(predicts).shape == torch.Size([self.batch_size * 3])
+            assert torch.Tensor(exo_predicts).shape == torch.Size([self.batch_size * 3])
+
+        else:
+            logger.warning('Not tested on GPU')
 
 
-# class TestAsPzeroModel(unittest.TestCase):
-#     dummy_loss_function = DummyLossFunction()
-#     model = AsPzeroModel(dummy_loss_function)
-#
-#     # shape
-#     batch_size = 2
-#     max_seq_length = 24
-#     batch_instance = mock_as_pzero_batch_instance
-#
-#     def test_on_cpu(self):
-#         device = torch.device('cpu')
-#         model = self.model.to(device)
-#
-#         # forward
-#         loss = model(self.batch_instance)
-#         assert loss.shape == torch.Size([])
-#
-#         # prediction
-#         selection_scores, exo_scores = model.prediction(self.batch_instance)
-#         assert selection_scores.shape == torch.Size([self.batch_size, self.max_seq_length])
-#         assert exo_scores.shape == torch.Size([self.batch_size, 4])
-#
-#         # inference
-#         output = model.inference(self.batch_instance)
-#         predicts = output["predicts"]
-#         exo_predicts = output["exo_predicts"]
-#         assert torch.Tensor(predicts).shape == torch.Size([self.batch_size])
-#         assert torch.Tensor(exo_predicts).shape == torch.Size([self.batch_size])
-#
-#     def test_on_gpu(self):
-#         if torch.cuda.is_available():
-#             device = torch.device('cuda', index=0)
-#             model = self.model.to(device)
-#
-#             # forward
-#             loss = model(self.batch_instance)
-#             assert loss.shape == torch.Size([])
-#
-#             # prediction
-#             selection_scores, exo_scores = model.prediction(self.batch_instance)
-#             assert selection_scores.shape == torch.Size([self.batch_size, self.max_seq_length])
-#             assert exo_scores.shape == torch.Size([self.batch_size, 4])
-#
-#             # inference
-#             output = model.inference(self.batch_instance)
-#             predicts = output["predicts"]
-#             exo_predicts = output["exo_predicts"]
-#             assert torch.Tensor(predicts).shape == torch.Size([self.batch_size])
-#             assert torch.Tensor(exo_predicts).shape == torch.Size([self.batch_size])
-#
-#         else:
-#             logger.warning('Not tested on GPU')
+class TestAsPzeroModel(unittest.TestCase):
+    dummy_loss_function = DummyLossFunction()
+    model = AsPzeroModel(dummy_loss_function)
+
+    # shape
+    batch_size = 2
+    max_seq_length = 24
+    batch_instance = mock_as_pzero_batch_instance
+
+    def test_on_cpu(self):
+        device = torch.device('cpu')
+        model = self.model.to(device)
+
+        # forward
+        loss = model(self.batch_instance)
+        assert loss.shape == torch.Size([])
+
+        # prediction
+        selection_scores, exo_scores = model.prediction(self.batch_instance)
+        assert selection_scores.shape == torch.Size([self.batch_size, self.max_seq_length])
+        assert exo_scores.shape == torch.Size([self.batch_size, 4])
+
+        # inference
+        output = model.inference(self.batch_instance)
+        predicts = output["predicts"]
+        exo_predicts = output["exo_predicts"]
+        assert torch.Tensor(predicts).shape == torch.Size([self.batch_size])
+        assert torch.Tensor(exo_predicts).shape == torch.Size([self.batch_size])
+
+    def test_on_gpu(self):
+        if torch.cuda.is_available():
+            device = torch.device('cuda', index=0)
+            model = self.model.to(device)
+
+            # forward
+            loss = model(self.batch_instance)
+            assert loss.shape == torch.Size([])
+
+            # prediction
+            selection_scores, exo_scores = model.prediction(self.batch_instance)
+            assert selection_scores.shape == torch.Size([self.batch_size, self.max_seq_length])
+            assert exo_scores.shape == torch.Size([self.batch_size, 4])
+
+            # inference
+            output = model.inference(self.batch_instance)
+            predicts = output["predicts"]
+            exo_predicts = output["exo_predicts"]
+            assert torch.Tensor(predicts).shape == torch.Size([self.batch_size])
+            assert torch.Tensor(exo_predicts).shape == torch.Size([self.batch_size])
+
+        else:
+            logger.warning('Not tested on GPU')
 
 
 class TestCreatePaddingMask(unittest.TestCase):
