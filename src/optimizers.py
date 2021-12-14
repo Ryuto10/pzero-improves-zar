@@ -1,4 +1,5 @@
 from itertools import tee
+from typing import Dict, List
 
 import torch.nn as nn
 from torch.optim import Adam, AdamW
@@ -10,7 +11,7 @@ def get_optimizer(
         adam_epsilon: float = 1e-08,
         learning_rate: float = 2e-05,
         weight_decay: float = 0.0,
-        additional_params_dicts: [dict, ...] = None,
+        additional_params_dicts: List[Dict] = None,
 ):
     """Create an optimizer"""
     additional_params = []

@@ -1,7 +1,7 @@
-# coding: utf-8
+# coding=utf-8
 
 from abc import ABC
-from typing import Any, Dict, List, Tuple, Union, TypedDict
+from typing import Dict, List, Tuple, Union, TypedDict
 
 import torch
 from torch.nn.utils.rnn import pad_sequence
@@ -480,7 +480,7 @@ def create_pzero_batch_instance(
 def create_as_batch_instance(
         training_instances: List[AsTrainingInstance],
         padding_value: int = 0
-) -> Dict[str, Any]:
+) -> AsBatchInstance:
     """
     Args:
         training_instances (List[AsTrainingInstance): instances to create a batch
