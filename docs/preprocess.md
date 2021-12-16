@@ -6,7 +6,7 @@
   $ poetry run python src/preprocess.py \
     --in [path to raw text] \
     --type "raw" \
-    > [path to output (full-with text)]
+    > [path to output (full-width text)]
   ```
   - Example of `full-width text`: `tests/samples/raw.txt`
 
