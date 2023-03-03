@@ -56,7 +56,11 @@
     EOS
     ```
 
-### 2. Prediction of the model for zero anaphora resolution
+### 2. Download the model parameters
+- You can download the model parameters from the [Github releases](https://github.com/Ryuto10/pzero-improves-zar/releases).
+- After downloading, move the model parameters from the download directory to the data directory.
+
+### 3. Prediction of the model for zero anaphora resolution
 - Model Path
     - Base Model: `data/cloze.as.seed5000.model`
     - Proposed Model: `data/pzero.as-pzero.seed5000.model`
